@@ -76,8 +76,7 @@ echo "📝 Declaring PaymasterContract..."
 PAYMASTER_CLASS_HASH=$(starkli declare "$PAYMASTER_ARTIFACT" \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
-    --rpc "$RPC_URL" \
-    --json | jq -r '.class_hash')
+    --rpc "$RPC_URL")
 
 echo "✅ PaymasterContract declared with class hash: $PAYMASTER_CLASS_HASH"
 
@@ -86,8 +85,7 @@ echo "📝 Declaring RemittanceEscrow..."
 ESCROW_CLASS_HASH=$(starkli declare "$ESCROW_ARTIFACT" \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
-    --rpc "$RPC_URL" \
-    --json | jq -r '.class_hash')
+    --rpc "$RPC_URL")
 
 echo "✅ RemittanceEscrow declared with class hash: $ESCROW_CLASS_HASH"
 
@@ -105,8 +103,7 @@ PAYMASTER_ADDRESS=$(starkli deploy "$PAYMASTER_CLASS_HASH" \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
     --rpc "$RPC_URL" \
-    --inputs "$ACCOUNT_ADDRESS" "$STRK_TOKEN_ADDRESS" "$DAILY_LIMIT" \
-    --json | jq -r '.contract_address')
+    "$ACCOUNT_ADDRESS" "$STRK_TOKEN_ADDRESS" "$DAILY_LIMIT")
 
 echo "✅ PaymasterContract deployed at: $PAYMASTER_ADDRESS"
 
@@ -116,8 +113,7 @@ ESCROW_ADDRESS=$(starkli deploy "$ESCROW_CLASS_HASH" \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
     --rpc "$RPC_URL" \
-    --inputs "$ACCOUNT_ADDRESS" "$PAYMASTER_ADDRESS" "$STRK_TOKEN_ADDRESS" "$ESCROW_FEE" \
-    --json | jq -r '.contract_address')
+    "$ACCOUNT_ADDRESS" "$PAYMASTER_ADDRESS" "$STRK_TOKEN_ADDRESS" "$ESCROW_FEE")
 
 echo "✅ RemittanceEscrow deployed at: $ESCROW_ADDRESS"
 
@@ -131,7 +127,7 @@ starkli invoke "$PAYMASTER_ADDRESS" fund_paymaster \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
     --rpc "$RPC_URL" \
-    --inputs "$INITIAL_FUNDING"
+    "$INITIAL_FUNDING"
 
 echo "✅ Paymaster funded with $INITIAL_FUNDING STRK"
 
@@ -141,7 +137,7 @@ starkli invoke "$PAYMASTER_ADDRESS" set_authorized_contract \
     --account "$ACCOUNT_PATH" \
     --keystore "$KEYSTORE_PATH" \
     --rpc "$RPC_URL" \
-    --inputs "$ESCROW_ADDRESS"
+    "$ESCROW_ADDRESS"
 
 echo "✅ Escrow authorized in Paymaster"
 
