@@ -1,5 +1,4 @@
 use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
-use core::starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
 // Interface for STRK token transfers
 #[starknet::interface]
@@ -21,31 +20,37 @@ trait IPaymaster<TContractState> {
     fn get_total_sponsored(self: @TContractState) -> u256;
     fn get_daily_limit(self: @TContractState) -> u256;
     fn set_daily_limit(ref self: TContractState, new_limit: u256);
-    fn get_daily_usage(self: @TContractState) -> (u256, u64); // (amount_used, last_reset_day)
+    fn get_daily_usage(self: @TContractState) -> (u256, u64);
+    fn pause(ref self: TContractState);
+    fn unpause(ref self: TContractState);
+    fn is_paused(self: @TContractState) -> bool;
+    fn set_max_gas_estimate(ref self: TContractState, max_gas: u256);
 }
 
 #[derive(Drop, Serde, starknet::Store)]
 struct DailyUsage {
     amount_used: u256,
-    last_reset_day: u64, // Day number since epoch
+    last_reset_day: u64,
 }
 
 #[starknet::contract]
 mod PaymasterContract {
-    use super::{IPaymaster, IERC20Dispatcher, ContractAddress, get_caller_address, get_block_timestamp, DailyUsage};
-    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
-    use core::starknet::event::EventEmitter;
+    use super::{IPaymaster, IERC20Dispatcher, IERC20DispatcherTrait, ContractAddress, get_caller_address, get_block_timestamp, DailyUsage};
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::event::EventEmitter;
 
     #[storage]
     struct Storage {
         owner: ContractAddress,
-        token_address: ContractAddress, // STRK token address
+        token_address: ContractAddress,
         authorized_contracts: Map<ContractAddress, bool>,
-        available_balance: u256, // ETH balance for gas sponsorship
-        total_sponsored: u256, // Total amount sponsored (for stats)
-        daily_limit: u256, // Maximum daily sponsorship limit
-        daily_usage: DailyUsage, // Track daily usage
-        gas_price_multiplier: u256, // Multiplier for gas estimation (e.g., 150 = 1.5x)
+        available_balance: u256,
+        total_sponsored: u256,
+        daily_limit: u256,
+        daily_usage: DailyUsage,
+        gas_price_multiplier: u256,
+        max_gas_estimate: u256,
+        is_paused: bool,
     }
 
     #[event]
@@ -126,9 +131,10 @@ mod PaymasterContract {
         self.owner.write(owner);
         self.token_address.write(token_address);
         self.daily_limit.write(initial_daily_limit);
-        self.gas_price_multiplier.write(150); // 1.5x multiplier for safety
+        self.gas_price_multiplier.write(150);
+        self.max_gas_estimate.write(100000);
+        self.is_paused.write(false);
         
-        // Initialize daily usage
         let daily_usage = DailyUsage {
             amount_used: 0,
             last_reset_day: self._get_current_day(),
@@ -139,10 +145,16 @@ mod PaymasterContract {
     #[abi(embed_v0)]
     impl PaymasterImpl of IPaymaster<ContractState> {
         fn sponsor_claim(ref self: ContractState, claimer: ContractAddress, gas_estimate: u256) -> bool {
+            if self.is_paused.read() {
+                return false;
+            }
+            
             let caller = get_caller_address();
             let timestamp = get_block_timestamp();
 
-            // Check if calling contract is authorized
+            assert(gas_estimate > 0, 'Invalid gas estimate');
+            assert(gas_estimate <= self.max_gas_estimate.read(), 'Gas estimate too large');
+
             if !self.authorized_contracts.read(caller) {
                 self.emit(SponsorshipFailed {
                     claimer,
@@ -153,10 +165,8 @@ mod PaymasterContract {
                 return false;
             }
 
-            // Calculate actual gas cost with multiplier
             let gas_cost = gas_estimate * self.gas_price_multiplier.read() / 100;
 
-            // Check if we can sponsor this transaction
             if !self._can_sponsor_internal(gas_cost) {
                 self.emit(SponsorshipFailed {
                     claimer,
@@ -167,10 +177,8 @@ mod PaymasterContract {
                 return false;
             }
 
-            // Update balances and daily usage
             self._update_sponsorship_tracking(gas_cost);
 
-            // Emit success event
             self.emit(ClaimSponsored {
                 claimer,
                 calling_contract: caller,
@@ -190,7 +198,6 @@ mod PaymasterContract {
             let caller = get_caller_address();
             let timestamp = get_block_timestamp();
 
-            // Transfer STRK tokens from caller to this contract
             let token_contract = IERC20Dispatcher { contract_address: self.token_address.read() };
             let transfer_success = token_contract.transfer_from(
                 caller, 
@@ -202,12 +209,10 @@ mod PaymasterContract {
                 return false;
             }
 
-            // Update available balance
             let current_balance = self.available_balance.read();
             let new_balance = current_balance + amount;
             self.available_balance.write(new_balance);
 
-            // Emit event
             self.emit(PaymasterFunded {
                 funder: caller,
                 amount,
@@ -223,15 +228,12 @@ mod PaymasterContract {
             let current_balance = self.available_balance.read();
             assert(amount <= current_balance, 'Insufficient balance');
 
-            // Update balance
             self.available_balance.write(current_balance - amount);
 
-            // Transfer tokens to owner
             let token_contract = IERC20Dispatcher { contract_address: self.token_address.read() };
             let transfer_success = token_contract.transfer(self.owner.read(), amount);
             assert(transfer_success, 'Emergency withdrawal failed');
 
-            // Emit event
             self.emit(EmergencyWithdrawal {
                 owner: self.owner.read(),
                 amount,
@@ -287,22 +289,40 @@ mod PaymasterContract {
             let usage = self.daily_usage.read();
             (usage.amount_used, usage.last_reset_day)
         }
+
+        fn pause(ref self: ContractState) {
+            self._assert_only_owner();
+            self.is_paused.write(true);
+        }
+
+        fn unpause(ref self: ContractState) {
+            self._assert_only_owner();
+            self.is_paused.write(false);
+        }
+
+        fn is_paused(self: @ContractState) -> bool {
+            self.is_paused.read()
+        }
+
+        fn set_max_gas_estimate(ref self: ContractState, max_gas: u256) {
+            self._assert_only_owner();
+            assert(max_gas > 0, 'Max gas must be positive');
+            assert(max_gas <= 1000000, 'Max gas too large');
+            self.max_gas_estimate.write(max_gas);
+        }
     }
 
     #[generate_trait]
     impl InternalImpl of InternalTrait {
         fn _can_sponsor_internal(self: @ContractState, gas_cost: u256) -> bool {
-            // Check available balance
             let available = self.available_balance.read();
             if gas_cost > available {
                 return false;
             }
 
-            // Check daily limit
             let current_day = self._get_current_day();
             let mut daily_usage = self.daily_usage.read();
 
-            // Reset daily usage if it's a new day
             if daily_usage.last_reset_day < current_day {
                 daily_usage.amount_used = 0;
                 daily_usage.last_reset_day = current_day;
@@ -317,19 +337,14 @@ mod PaymasterContract {
         }
 
         fn _update_sponsorship_tracking(ref self: ContractState, gas_cost: u256) {
-            // Update available balance
             let current_balance = self.available_balance.read();
-            self.available_balance.write(current_balance - gas_cost);
-
-            // Update total sponsored
             let total_sponsored = self.total_sponsored.read();
-            self.total_sponsored.write(total_sponsored + gas_cost);
-
-            // Update daily usage
             let current_day = self._get_current_day();
             let mut daily_usage = self.daily_usage.read();
 
-            // Reset if new day
+            self.available_balance.write(current_balance - gas_cost);
+            self.total_sponsored.write(total_sponsored + gas_cost);
+
             if daily_usage.last_reset_day < current_day {
                 daily_usage.amount_used = gas_cost;
                 daily_usage.last_reset_day = current_day;
@@ -341,7 +356,6 @@ mod PaymasterContract {
         }
 
         fn _get_current_day(self: @ContractState) -> u64 {
-            // Convert timestamp to day number (86400 seconds per day)
             get_block_timestamp() / 86400
         }
 
