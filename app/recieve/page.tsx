@@ -3,23 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import {
   Download,
-  Smartphone,
   MessageSquare,
   CheckCircle,
   Clock,
   Shield,
-  CreditCard,
   AlertCircle,
   Phone,
-  RefreshCw,
   Eye,
   EyeOff,
-  Copy,
-  ExternalLink,
   ArrowRight,
   Banknote,
-  Building2,
-  Wallet,
 } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 
