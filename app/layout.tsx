@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Pick-n-get - Sustainable Recycling Made Easy',
-  description: 'Join the circular economy revolution with Pick-n-get.',
+  title: 'Stackremit - Cross border payments made easy',
+  description: 'Join the future of cross-border payments with Stackremit.',
 };
 
 export default function RootLayout({
@@ -31,4 +31,3 @@ export default function RootLayout({
     </html>
   );
 }
-
