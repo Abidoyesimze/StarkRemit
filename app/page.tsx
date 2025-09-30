@@ -2,105 +2,101 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Send,
-  Zap,
   Shield,
-  Globe,
-  ArrowRight,
-  Star,
-  Clock,
-  DollarSign,
-  Users,
+  Lock,
+  Eye,
+  EyeOff,
+  Zap,
   CheckCircle,
-  Play,
+  ArrowRight,
   TrendingUp,
-  Smartphone,
-  CreditCard,
+  Users,
+  Activity,
+  BarChart3,
+  FileText,
+  Coins,
 } from 'lucide-react';
-
 import AppLayout from './components/layout/AppLayout';
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('Nigeria');
-  const [sendAmount, setSendAmount] = useState('100');
-
-  // Demo exchange rates
-  const exchangeRates = {
-    Nigeria: { rate: 755.5, currency: 'NGN', flag: '🇳🇬' },
-    Kenya: { rate: 150.25, currency: 'KES', flag: '🇰🇪' },
-    Ghana: { rate: 12.45, currency: 'GHS', flag: '🇬🇭' },
-    Philippines: { rate: 56.75, currency: 'PHP', flag: '🇵🇭' },
-    India: { rate: 83.25, currency: 'INR', flag: '🇮🇳' },
-  };
-
-  const currentRate = exchangeRates[selectedCountry as keyof typeof exchangeRates];
-  const receiveAmount = (parseFloat(sendAmount) * currentRate.rate).toLocaleString();
+  const [privacyMode, setPrivacyMode] = useState(true);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  // Protocol stats
+  const stats = {
+    tvl: '$548M',
+    users: '12,500+',
+    transactions: '450K+',
+    proofs: '2.1M+',
+  };
+
   return (
     <AppLayout showHeader={true} showSidebar={false} showFooter={true}>
-      <div className='min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900'>
+      <div className='min-h-screen bg-gradient-to-br from-[#0A0118] via-[#1A0B2E] to-[#0A0118]'>
         {/* Hero Section */}
-        <section className='relative px-4 sm:px-6 lg:px-8 pt-20 pb-32'>
+        <section className='relative px-4 sm:px-6 lg:px-8 pt-20 pb-32 overflow-hidden'>
+          {/* Background Effects */}
+          <div className='absolute top-20 left-10 w-32 h-32 bg-primary-purple/20 rounded-full blur-3xl animate-pulse'></div>
+          <div className='absolute bottom-20 right-10 w-40 h-40 bg-encrypted-green/20 rounded-full blur-3xl animate-pulse'></div>
+
           <div className='max-w-7xl mx-auto'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
               {/* Left Column - Content */}
               <div className={`fade-in ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
                 <div className='flex items-center gap-2 mb-6'>
-                  <div className='bg-success-green/20 text-success px-3 py-1 rounded-full text-sm font-medium'>
+                  <div className='status-encrypted px-3 py-1 rounded-full text-sm font-medium'>
                     Built on Starknet L2
                   </div>
-                  <div className='bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium'>
-                    Ultra-Low Fees
+                  <div className='bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-medium'>
+                    Zero-Knowledge Proofs
                   </div>
                 </div>
 
                 <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-space-grotesk leading-tight'>
-                  Send Money
-                  <span className='block text-gradient-primary'>Across Borders</span>
-                  <span className='block'>Instantly</span>
+                  Private DeFi
+                  <span className='block text-gradient-primary'>Without Compromise</span>
                 </h1>
 
                 <p className='text-xl text-gray-300 mb-8 leading-relaxed font-inter'>
-                  Skip expensive banks and slow transfers. Send money to your family with{' '}
-                  <strong className='text-white'>ultra-low fees</strong> and
-                  <strong className='text-white'> lightning speed</strong> using blockchain
-                  technology.
+                  Trade, lend, and borrow on Starknet with complete privacy.
+                  <strong className='text-white'> Zero-knowledge proofs</strong> keep your portfolio
+                  hidden while maintaining{' '}
+                  <strong className='text-white'>full regulatory compliance</strong>.
                 </p>
 
                 {/* Key Benefits */}
                 <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8'>
                   <div className='flex items-center gap-3'>
-                    <div className='w-10 h-10 bg-success-green/20 rounded-lg flex items-center justify-center'>
-                      <Zap className='w-5 h-5 text-success' />
+                    <div className='w-10 h-10 bg-encrypted/20 rounded-lg flex items-center justify-center'>
+                      <Lock className='w-5 h-5 text-encrypted' />
                     </div>
                     <div>
-                      <p className='text-white font-medium text-sm'>Under 1 min</p>
-                      <p className='text-gray-400 text-xs'>Transfer time</p>
+                      <p className='text-white font-medium text-sm'>Hidden Balances</p>
+                      <p className='text-gray-400 text-xs'>Fully private</p>
                     </div>
                   </div>
 
                   <div className='flex items-center gap-3'>
-                    <div className='w-10 h-10 bg-primary-blue/20 rounded-lg flex items-center justify-center'>
-                      <DollarSign className='w-5 h-5 text-blue-400' />
+                    <div className='w-10 h-10 bg-primary-purple/20 rounded-lg flex items-center justify-center'>
+                      <Shield className='w-5 h-5 text-primary-purple' />
                     </div>
                     <div>
-                      <p className='text-white font-medium text-sm'>Under $0.01</p>
-                      <p className='text-gray-400 text-xs'>Network fees</p>
+                      <p className='text-white font-medium text-sm'>ZK Proofs</p>
+                      <p className='text-gray-400 text-xs'>Cryptographically secure</p>
                     </div>
                   </div>
 
                   <div className='flex items-center gap-3'>
-                    <div className='w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center'>
-                      <Globe className='w-5 h-5 text-purple-400' />
+                    <div className='w-10 h-10 bg-warning-amber/20 rounded-lg flex items-center justify-center'>
+                      <CheckCircle className='w-5 h-5 text-warning' />
                     </div>
                     <div>
-                      <p className='text-white font-medium text-sm'>150+ Countries</p>
-                      <p className='text-gray-400 text-xs'>Worldwide reach</p>
+                      <p className='text-white font-medium text-sm'>Compliant</p>
+                      <p className='text-gray-400 text-xs'>Regulatory ready</p>
                     </div>
                   </div>
                 </div>
@@ -108,126 +104,137 @@ export default function HomePage() {
                 {/* CTA Buttons */}
                 <div className='flex flex-col sm:flex-row gap-4 mb-8'>
                   <button className='btn-primary text-lg px-8 py-4 rounded-xl flex items-center justify-center gap-3'>
-                    <Send className='w-5 h-5' />
-                    Send Money Now
+                    <Shield className='w-5 h-5' />
+                    Launch App
                     <ArrowRight className='w-5 h-5' />
                   </button>
 
                   <button className='flex items-center justify-center gap-3 px-8 py-4 rounded-xl border-2 border-white/20 text-white hover:bg-white/10 transition-all duration-200'>
-                    <Play className='w-5 h-5' />
-                    Watch Demo
+                    <FileText className='w-5 h-5' />
+                    Read Docs
                   </button>
                 </div>
 
-                {/* Social Proof */}
+                {/* Protocol Stats */}
                 <div className='flex items-center gap-6 text-sm text-gray-400'>
                   <div className='flex items-center gap-2'>
-                    <Users className='w-4 h-4' />
-                    <span>10,000+ users</span>
+                    <TrendingUp className='w-4 h-4' />
+                    <span>{stats.tvl} TVL</span>
                   </div>
                   <div className='flex items-center gap-2'>
-                    <TrendingUp className='w-4 h-4' />
-                    <span>$2M+ transferred</span>
+                    <Users className='w-4 h-4' />
+                    <span>{stats.users} users</span>
                   </div>
-                  <div className='flex items-center gap-1'>
-                    <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
-                    <span>4.9/5 rating</span>
+                  <div className='flex items-center gap-2'>
+                    <Activity className='w-4 h-4' />
+                    <span>{stats.proofs} proofs</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column - Transfer Calculator */}
+              {/* Right Column - Privacy Demo */}
               <div className={`slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-                <div className='bg-glass rounded-2xl p-8 backdrop-blur-xl border border-white/10'>
-                  <h3 className='text-2xl font-bold text-white mb-6 font-space-grotesk text-center'>
-                    Try Our Calculator
-                  </h3>
-
-                  {/* Send Amount */}
-                  <div className='mb-6'>
-                    <label className='block text-white text-sm font-medium mb-2'>You Send</label>
-                    <div className='relative'>
-                      <div className='absolute left-4 top-1/2 transform -translate-y-1/2 text-white font-bold text-lg'>
-                        $
-                      </div>
-                      <input
-                        type='number'
-                        value={sendAmount}
-                        onChange={(e) => setSendAmount(e.target.value)}
-                        className='w-full pl-8 pr-16 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-lg font-bold placeholder-white/50 focus:border-blue-400 focus:outline-none transition-colors'
-                        placeholder='100'
-                      />
-                      <div className='absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-sm'>
-                        USD
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Country Selector */}
-                  <div className='mb-6'>
-                    <label className='block text-white text-sm font-medium mb-2'>Send To</label>
-                    <select
-                      value={selectedCountry}
-                      onChange={(e) => setSelectedCountry(e.target.value)}
-                      className='w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white text-lg focus:border-blue-400 focus:outline-none transition-colors'
+                <div className='bg-glass rounded-2xl p-8 backdrop-blur-xl border border-purple-500/10'>
+                  <div className='flex items-center justify-between mb-6'>
+                    <h3 className='text-2xl font-bold text-white font-space-grotesk'>
+                      Your Private Vault
+                    </h3>
+                    <button
+                      onClick={() => setPrivacyMode(!privacyMode)}
+                      className={`p-2 rounded-lg transition-all duration-200 ${
+                        privacyMode ? 'bg-encrypted text-white' : 'bg-white/10 text-white/70'
+                      }`}
                     >
-                      {Object.entries(exchangeRates).map(([country, data]) => (
-                        <option key={country} value={country} className='bg-slate-800'>
-                          {data.flag} {country}
-                        </option>
-                      ))}
-                    </select>
+                      {privacyMode ? <EyeOff className='w-5 h-5' /> : <Eye className='w-5 h-5' />}
+                    </button>
                   </div>
 
-                  {/* Receive Amount */}
+                  {/* Balance Display */}
                   <div className='mb-6'>
-                    <label className='block text-white text-sm font-medium mb-2'>
-                      Recipient Gets
-                    </label>
-                    <div className='bg-success-green/10 border border-success-green/30 rounded-xl p-4'>
-                      <div className='text-success text-3xl font-bold font-space-grotesk'>
-                        {currentRate.currency} {receiveAmount}
+                    <label className='block text-white/70 text-sm mb-2'>Total Balance</label>
+                    <div className='bg-white/5 border border-white/20 rounded-xl p-6'>
+                      {privacyMode ? (
+                        <div className='text-4xl font-bold font-jetbrains text-gradient-primary'>
+                          ●●●●●●●●
+                        </div>
+                      ) : (
+                        <div>
+                          <div className='text-4xl font-bold text-white font-space-grotesk'>
+                            $12,450.89
+                          </div>
+                          <div className='text-gray-400 text-sm mt-1'>≈ 7.234 ETH</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Assets Breakdown */}
+                  <div className='space-y-3 mb-6'>
+                    <div className='flex items-center justify-between p-4 bg-white/5 rounded-lg'>
+                      <div className='flex items-center gap-3'>
+                        <div className='w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center'>
+                          <span className='text-sm'>Ξ</span>
+                        </div>
+                        <span className='text-white font-medium'>ETH</span>
                       </div>
-                      <div className='text-success/70 text-sm mt-1'>
-                        Rate: 1 USD = {currentRate.rate} {currentRate.currency}
+                      <div className='text-right'>
+                        {privacyMode ? (
+                          <span className='text-primary-purple font-jetbrains'>●●●●</span>
+                        ) : (
+                          <>
+                            <p className='text-white font-semibold'>5.234 ETH</p>
+                            <p className='text-gray-400 text-xs'>$8,901.23</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className='flex items-center justify-between p-4 bg-white/5 rounded-lg'>
+                      <div className='flex items-center gap-3'>
+                        <div className='w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center'>
+                          <span className='text-sm'>$</span>
+                        </div>
+                        <span className='text-white font-medium'>USDC</span>
+                      </div>
+                      <div className='text-right'>
+                        {privacyMode ? (
+                          <span className='text-primary-purple font-jetbrains'>●●●●</span>
+                        ) : (
+                          <>
+                            <p className='text-white font-semibold'>3,549.66</p>
+                            <p className='text-gray-400 text-xs'>$3,549.66</p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Fee Breakdown */}
-                  <div className='mb-6 p-4 bg-white/5 rounded-xl'>
-                    <div className='flex justify-between items-center mb-2'>
-                      <span className='text-white/70 text-sm'>Transfer fee</span>
-                      <span className='text-success text-sm font-medium'>$0.00</span>
-                    </div>
-                    <div className='flex justify-between items-center mb-2'>
-                      <span className='text-white/70 text-sm'>Network fee</span>
-                      <span className='text-success text-sm font-medium'>{'< $0.01'}</span>
-                    </div>
-                    <div className='border-t border-white/10 pt-2'>
-                      <div className='flex justify-between items-center'>
-                        <span className='text-white font-medium'>Total cost</span>
-                        <span className='text-white font-bold'>${sendAmount}</span>
+                  {/* Privacy Status */}
+                  <div className='bg-encrypted/10 border border-encrypted/30 rounded-lg p-4 mb-6'>
+                    <div className='flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <Shield className='w-5 h-5 text-encrypted' />
+                        <span className='text-encrypted font-medium text-sm'>Privacy Status</span>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-2 h-2 bg-encrypted rounded-full animate-pulse'></div>
+                        <span className='text-encrypted text-sm font-semibold'>Protected</span>
                       </div>
                     </div>
+                    <p className='text-white/60 text-xs mt-2'>
+                      All balances hidden with zero-knowledge proofs
+                    </p>
                   </div>
 
-                  {/* Send Button */}
-                  <button className='btn-success w-full text-lg py-4 rounded-xl font-semibold'>
-                    Send ${sendAmount} Now
-                  </button>
-
-                  <p className='text-center text-white/60 text-xs mt-4'>
-                    🔒 Secure • No hidden fees • Instant transfer
-                  </p>
+                  {/* Action Buttons */}
+                  <div className='grid grid-cols-2 gap-3'>
+                    <button className='btn-encrypted py-3 text-sm'>Deposit</button>
+                    <button className='btn-primary py-3 text-sm'>Start Trading</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Floating Elements */}
-          <div className='absolute top-20 left-10 w-20 h-20 bg-blue-500/20 rounded-full blur-xl animate-pulse'></div>
-          <div className='absolute bottom-20 right-10 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl animate-pulse'></div>
         </section>
 
         {/* How It Works Section */}
@@ -235,10 +242,10 @@ export default function HomePage() {
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
               <h2 className='text-3xl md:text-4xl font-bold text-white mb-4 font-space-grotesk'>
-                How StarkRemit Works
+                How Arcanum Works
               </h2>
               <p className='text-xl text-gray-300 font-inter'>
-                Send money in 3 simple steps. No wallet needed for recipients.
+                Privacy-preserving DeFi in three simple steps
               </p>
             </div>
 
@@ -246,50 +253,51 @@ export default function HomePage() {
               {/* Step 1 */}
               <div className='text-center group'>
                 <div className='w-16 h-16 bg-primary-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200'>
-                  <Smartphone className='w-8 h-8 text-white' />
+                  <Lock className='w-8 h-8 text-white' />
                 </div>
-                <div className='bg-number-1 w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-blue-500'>
+                <div className='w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-primary-purple'>
                   1
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Connect Your Wallet
+                  Create Private Vault
                 </h3>
                 <p className='text-gray-300 font-inter'>
-                  Connect ArgentX or Braavos wallet. Enter recipient's phone number and amount to
-                  send.
+                  Deposit assets into encrypted vaults. Balances are hidden using cryptographic
+                  commitments.
                 </p>
               </div>
 
               {/* Step 2 */}
               <div className='text-center group'>
-                <div className='w-16 h-16 bg-success-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200'>
-                  <Send className='w-8 h-8 text-white' />
+                <div className='w-16 h-16 bg-encrypted-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200'>
+                  <Shield className='w-8 h-8 text-white' />
                 </div>
-                <div className='w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-green-500'>
+                <div className='w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-encrypted'>
                   2
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Instant Transfer
+                  Trade Privately
                 </h3>
                 <p className='text-gray-300 font-inter'>
-                  Your money is locked in our smart contract and instantly transferred on Starknet
-                  L2.
+                  Lend, borrow, and trade without exposing amounts. Zero-knowledge proofs verify
+                  transactions.
                 </p>
               </div>
 
               {/* Step 3 */}
               <div className='text-center group'>
                 <div className='w-16 h-16 bg-stark-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200'>
-                  <CreditCard className='w-8 h-8 text-white' />
+                  <CheckCircle className='w-8 h-8 text-white' />
                 </div>
-                <div className='w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-purple-500'>
+                <div className='w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 bg-warning-amber'>
                   3
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Cash Out via SMS
+                  Stay Compliant
                 </h3>
                 <p className='text-gray-300 font-inter'>
-                  Recipient gets SMS with claim link. They cash out to mobile money or bank account.
+                  Generate compliance proofs for regulators without exposing your full portfolio
+                  details.
                 </p>
               </div>
             </div>
@@ -301,133 +309,137 @@ export default function HomePage() {
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
               <h2 className='text-3xl md:text-4xl font-bold text-white mb-4 font-space-grotesk'>
-                Why Choose StarkRemit?
+                Why Choose Arcanum?
               </h2>
               <p className='text-xl text-gray-300 font-inter'>
-                Built for the future of cross-border payments
+                Privacy meets regulatory compliance
               </p>
             </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
               {/* Feature 1 */}
-              <div className='transfer-card p-8 text-center'>
-                <div className='w-16 h-16 bg-success-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
+              <div className='vault-card p-8 text-center'>
+                <div className='w-16 h-16 bg-encrypted-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
+                  <Lock className='w-8 h-8 text-white' />
+                </div>
+                <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
+                  Hidden Balances
+                </h3>
+                <p className='text-gray-300 font-inter mb-4'>
+                  Your portfolio balances and transaction amounts remain completely private using
+                  cryptographic commitments.
+                </p>
+                <div className='bg-encrypted/10 rounded-lg p-3'>
+                  <p className='text-encrypted text-sm font-medium'>🔒 100% Private by Default</p>
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className='vault-card p-8 text-center'>
+                <div className='w-16 h-16 bg-primary-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
+                  <Shield className='w-8 h-8 text-white' />
+                </div>
+                <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
+                  Zero-Knowledge Proofs
+                </h3>
+                <p className='text-gray-300 font-inter mb-4'>
+                  Prove you have sufficient funds or meet requirements without revealing exact
+                  amounts or portfolio details.
+                </p>
+                <div className='bg-purple-500/10 rounded-lg p-3'>
+                  <p className='text-primary-purple text-sm font-medium'>⚡ Powered by Starknet</p>
+                </div>
+              </div>
+
+              {/* Feature 3 */}
+              <div className='vault-card p-8 text-center'>
+                <div className='w-16 h-16 bg-stark-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
                   <Zap className='w-8 h-8 text-white' />
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
                   Lightning Fast
                 </h3>
                 <p className='text-gray-300 font-inter mb-4'>
-                  Transfers complete in under 60 seconds. No more waiting days for your family to
-                  receive money.
-                </p>
-                <div className='bg-success-green/10 rounded-lg p-3'>
-                  <p className='text-success text-sm font-medium'>⚡ Average time: 45 seconds</p>
-                </div>
-              </div>
-
-              {/* Feature 2 */}
-              <div className='transfer-card p-8 text-center'>
-                <div className='w-16 h-16 bg-primary-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
-                  <DollarSign className='w-8 h-8 text-white' />
-                </div>
-                <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Ultra-Low Fees
-                </h3>
-                <p className='text-gray-300 font-inter mb-4'>
-                  Pay almost nothing in fees. Traditional remittances cost 6-12%. We cost less than
-                  0.1%.
+                  Built on Starknet L2 for instant transactions with minimal fees while maintaining
+                  strong privacy guarantees.
                 </p>
                 <div className='bg-blue-500/10 rounded-lg p-3'>
-                  <p className='text-blue-400 text-sm font-medium'>💰 Save 95% on fees</p>
-                </div>
-              </div>
-
-              {/* Feature 3 */}
-              <div className='transfer-card p-8 text-center'>
-                <div className='w-16 h-16 bg-stark-gradient rounded-2xl flex items-center justify-center mx-auto mb-6'>
-                  <Shield className='w-8 h-8 text-white' />
-                </div>
-                <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Bank-Level Security
-                </h3>
-                <p className='text-gray-300 font-inter mb-4'>
-                  Built on Starknet L2 with cryptographic proofs. Your money is always protected.
-                </p>
-                <div className='bg-purple-500/10 rounded-lg p-3'>
-                  <p className='text-purple-400 text-sm font-medium'>🛡️ Zero-knowledge proofs</p>
+                  <p className='text-blue-400 text-sm font-medium'>
+                    ⚡ {'< 0.01$ per transaction'}
+                  </p>
                 </div>
               </div>
 
               {/* Feature 4 */}
-              <div className='transfer-card p-8 text-center'>
-                <div className='w-16 h-16 bg-warning-yellow/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-warning-yellow/30'>
-                  <Smartphone className='w-8 h-8 text-warning' />
+              <div className='vault-card p-8 text-center'>
+                <div className='w-16 h-16 bg-warning-amber/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-warning-amber/30'>
+                  <FileText className='w-8 h-8 text-warning' />
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  No Wallet Required
+                  Regulatory Compliance
                 </h3>
                 <p className='text-gray-300 font-inter mb-4'>
-                  Recipients don't need crypto wallets. They get SMS notifications and cash out
-                  easily.
+                  Generate selective disclosure proofs for regulators while keeping sensitive data
+                  private from public view.
                 </p>
-                <div className='bg-warning-yellow/10 rounded-lg p-3'>
-                  <p className='text-warning text-sm font-medium'>📱 Just a phone number needed</p>
+                <div className='bg-warning-amber/10 rounded-lg p-3'>
+                  <p className='text-warning text-sm font-medium'>✓ SEC/GDPR Ready</p>
                 </div>
               </div>
 
               {/* Feature 5 */}
-              <div className='transfer-card p-8 text-center'>
+              <div className='vault-card p-8 text-center'>
                 <div className='w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-green-500/30'>
-                  <Globe className='w-8 h-8 text-green-400' />
+                  <Coins className='w-8 h-8 text-green-400' />
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  Global Reach
+                  Private Lending
                 </h3>
                 <p className='text-gray-300 font-inter mb-4'>
-                  Send to 150+ countries. Integration with local payment methods and mobile money.
+                  Lend and borrow without revealing your collateral amounts or borrowing capacity to
+                  other market participants.
                 </p>
                 <div className='bg-green-500/10 rounded-lg p-3'>
-                  <p className='text-green-400 text-sm font-medium'>🌍 150+ countries supported</p>
+                  <p className='text-green-400 text-sm font-medium'>💰 Competitive rates</p>
                 </div>
               </div>
 
               {/* Feature 6 */}
-              <div className='transfer-card p-8 text-center'>
+              <div className='vault-card p-8 text-center'>
                 <div className='w-16 h-16 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-red-500/30'>
-                  <Clock className='w-8 h-8 text-red-400' />
+                  <BarChart3 className='w-8 h-8 text-red-400' />
                 </div>
                 <h3 className='text-xl font-bold text-white mb-4 font-space-grotesk'>
-                  24/7 Support
+                  MEV Protection
                 </h3>
                 <p className='text-gray-300 font-inter mb-4'>
-                  Get help anytime. Our support team is available round the clock for urgent
-                  transfers.
+                  Prevent front-running and sandwich attacks by keeping transaction amounts and
+                  strategies completely private.
                 </p>
                 <div className='bg-red-500/10 rounded-lg p-3'>
-                  <p className='text-red-400 text-sm font-medium'>🆘 Always here to help</p>
+                  <p className='text-red-400 text-sm font-medium'>🛡️ Anti-MEV by design</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Call to Action */}
+        {/* CTA Section */}
         <section className='py-20 px-4 sm:px-6 lg:px-8 bg-primary-gradient'>
           <div className='max-w-4xl mx-auto text-center'>
             <h2 className='text-3xl md:text-4xl font-bold text-white mb-4 font-space-grotesk'>
-              Ready to Send Money the Smart Way?
+              Ready to Experience Private DeFi?
             </h2>
             <p className='text-xl text-white/90 mb-8 font-inter'>
-              Join thousands of users who trust StarkRemit for their cross-border transfers
+              Join thousands of users protecting their financial privacy on Starknet
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-              <button className='bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center gap-3'>
-                <Send className='w-5 h-5' />
-                Start Sending Now
+              <button className='bg-white text-purple-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center gap-3'>
+                <Shield className='w-5 h-5' />
+                Launch App
               </button>
               <button className='border-2 border-white text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-white/10 transition-colors duration-200'>
-                Learn More
+                Read Documentation
               </button>
             </div>
           </div>

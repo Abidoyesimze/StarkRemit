@@ -1,79 +1,87 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  /* Primary Colors - Financial Blue Theme */
-  --primary-blue: #1E40AF;
-  --primary-light: #3B82F6;
-  --primary-gradient: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
-  --secondary-blue: #1D4ED8;
-  --accent-blue: #60A5FA;
-  
-  /* Success & Financial Colors */
-  --success-green: #10B981;
-  --success-light: #34D399;
-  --success-gradient: linear-gradient(135deg, #10B981 0%, #34D399 100%);
-  
+  /* Primary Colors - Privacy & Security Theme */
+  --primary-purple: #8b5cf6;
+  --primary-violet: #7c3aed;
+  --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --secondary-purple: #a78bfa;
+  --accent-purple: #c4b5fd;
+
+  /* Privacy-Specific Colors */
+  --privacy-dark: #1e1b4b;
+  --privacy-darker: #0f0d2b;
+  --encrypted-green: #10b981;
+  --encrypted-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
   /* Warning & Alert Colors */
-  --warning-yellow: #F59E0B;
-  --warning-light: #FBBF24;
-  --error-red: #EF4444;
-  --error-light: #F87171;
-  
-  /* Neutral Colors */
-  --white: #FFFFFF;
-  --gray-50: #F9FAFB;
-  --gray-100: #F3F4F6;
-  --gray-200: #E5E7EB;
-  --gray-300: #D1D5DB;
-  --gray-400: #9CA3AF;
-  --gray-500: #6B7280;
-  --gray-600: #4B5563;
+  --warning-amber: #f59e0b;
+  --warning-light: #fcd34d;
+  --error-red: #ef4444;
+  --error-light: #f87171;
+  --danger-crimson: #dc2626;
+
+  /* Neutral Colors - Darker palette */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
   --gray-700: #374151;
-  --gray-800: #1F2937;
+  --gray-800: #1f2937;
   --gray-900: #111827;
-  
-  /* Dark Mode Colors */
-  --dark-bg: #0F172A;
-  --dark-card: #1E293B;
-  --dark-border: #334155;
-  --dark-text: #F1F5F9;
-  --dark-text-secondary: #CBD5E1;
-  
-  /* Background Gradients */
-  --bg-primary: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-  --bg-card: rgba(30, 41, 59, 0.8);
-  --bg-glass: rgba(255, 255, 255, 0.1);
-  
+
+  /* Dark Mode Colors - Deeper blacks */
+  --dark-bg: #0a0118;
+  --dark-card: #1a0b2e;
+  --dark-border: #2d1b4e;
+  --dark-text: #f1f5f9;
+  --dark-text-secondary: #cbd5e1;
+
+  /* Background Gradients - Privacy theme */
+  --bg-primary: linear-gradient(135deg, #0a0118 0%, #1a0b2e 100%);
+  --bg-card: rgba(26, 11, 46, 0.8);
+  --bg-glass: rgba(139, 92, 246, 0.05);
+  --bg-encrypted: rgba(16, 185, 129, 0.1);
+
   /* Header & Footer */
-  --header-bg: rgba(15, 23, 42, 0.95);
-  --footer-bg: rgba(15, 23, 42, 0.98);
-  
+  --header-bg: rgba(10, 1, 24, 0.95);
+  --footer-bg: rgba(10, 1, 24, 0.98);
+
   /* Sidebar */
-  --sidebar-bg: rgba(30, 41, 59, 0.95);
-  --sidebar-active: rgba(30, 64, 175, 0.2);
+  --sidebar-bg: rgba(26, 11, 46, 0.95);
+  --sidebar-active: rgba(139, 92, 246, 0.2);
   --sidebar-hover: rgba(255, 255, 255, 0.1);
-  
-  /* Remittance Specific */
-  --money-transfer: #16A34A;
-  --pending-status: #F59E0B;
-  --completed-status: #10B981;
-  --failed-status: #EF4444;
-  
-  /* StarkNet Branding */
-  --stark-purple: #6366F1;
-  --stark-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+
+  /* Privacy Specific */
+  --privacy-status: #10b981;
+  --encrypted-status: #8b5cf6;
+  --public-status: #f59e0b;
+  --hidden-balance: #6366f1;
+
+  /* Starknet Branding */
+  --stark-purple: #8b5cf6;
+  --stark-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+
+  /* Zero-Knowledge Proof Theme */
+  --zk-proof: #10b981;
+  --zk-verified: #059669;
+  --zk-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg-primary: var(--dark-bg);
   --text-primary: var(--dark-text);
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   --bg-primary: var(--gray-50);
   --text-primary: var(--gray-900);
 }
@@ -84,7 +92,9 @@ body {
   min-height: 100vh;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   font-family: 'Inter', sans-serif;
 }
 
@@ -99,98 +109,112 @@ a {
   .bg-primary-gradient {
     background: var(--primary-gradient);
   }
-  
-  .bg-success-gradient {
-    background: var(--success-gradient);
+
+  .bg-encrypted-gradient {
+    background: var(--encrypted-gradient);
   }
-  
+
+  .bg-zk-gradient {
+    background: var(--zk-gradient);
+  }
+
   .bg-stark-gradient {
     background: var(--stark-gradient);
   }
-  
+
   .bg-glass {
     background: var(--bg-glass);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.1);
   }
-  
+
+  .bg-encrypted {
+    background: var(--bg-encrypted);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
   .bg-card-dark {
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--dark-border);
   }
-  
+
   /* Header & Navigation */
   .header-gradient {
     background: var(--header-bg);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
   }
-  
+
   .footer-gradient {
     background: var(--footer-bg);
     backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(139, 92, 246, 0.1);
   }
-  
+
   .sidebar-gradient {
     background: var(--sidebar-bg);
     backdrop-filter: blur(30px);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(139, 92, 246, 0.1);
   }
-  
+
   /* Font Families */
   .font-space-grotesk {
     font-family: 'Space Grotesk', sans-serif;
   }
-  
+
   .font-inter {
     font-family: 'Inter', sans-serif;
   }
-  
-  .font-roboto-mono {
-    font-family: 'Roboto Mono', monospace;
+
+  .font-jetbrains {
+    font-family: 'JetBrains Mono', monospace;
   }
-  
+
   .font-poppins {
     font-family: 'Poppins', sans-serif;
   }
-  
+
   /* Text Colors */
-  .text-primary-blue {
-    color: var(--primary-blue);
+  .text-primary-purple {
+    color: var(--primary-purple);
   }
-  
-  .text-success {
-    color: var(--success-green);
+
+  .text-encrypted {
+    color: var(--encrypted-green);
   }
-  
+
   .text-warning {
-    color: var(--warning-yellow);
+    color: var(--warning-amber);
   }
-  
+
   .text-error {
     color: var(--error-red);
   }
-  
+
   .text-stark {
     color: var(--stark-purple);
   }
-  
+
+  .text-zk-proof {
+    color: var(--zk-proof);
+  }
+
   .text-gradient-primary {
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
-  .text-gradient-success {
-    background: var(--success-gradient);
+
+  .text-gradient-encrypted {
+    background: var(--encrypted-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   /* Button Styles */
   .btn-primary {
     background: var(--primary-gradient);
@@ -199,16 +223,16 @@ a {
     padding: 0.75rem 1.5rem;
     border-radius: 0.75rem;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.39);
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39);
   }
-  
+
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px 0 rgba(30, 64, 175, 0.5);
+    box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.5);
   }
-  
-  .btn-success {
-    background: var(--success-gradient);
+
+  .btn-encrypted {
+    background: var(--encrypted-gradient);
     color: white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
@@ -216,12 +240,12 @@ a {
     transition: all 0.3s ease;
     box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
   }
-  
-  .btn-success:hover {
+
+  .btn-encrypted:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.5);
   }
-  
+
   .btn-stark {
     background: var(--stark-gradient);
     color: white;
@@ -229,133 +253,209 @@ a {
     padding: 0.75rem 1.5rem;
     border-radius: 0.75rem;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39);
   }
-  
+
   /* Wallet Connection States */
   .wallet-connected {
     background: rgba(16, 185, 129, 0.1);
-    border: 1px solid var(--success-green);
-    color: var(--success-green);
+    border: 1px solid var(--encrypted-green);
+    color: var(--encrypted-green);
   }
-  
+
   .wallet-disconnected {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid var(--error-red);
     color: var(--error-red);
   }
-  
-  /* Status Badges */
-  .status-pending {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--warning-yellow);
-    border: 1px solid var(--warning-yellow);
+
+  /* Privacy Status Badges */
+  .status-private {
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--primary-purple);
+    border: 1px solid var(--primary-purple);
   }
-  
-  .status-completed {
+
+  .status-encrypted {
     background: rgba(16, 185, 129, 0.1);
-    color: var(--success-green);
-    border: 1px solid var(--success-green);
+    color: var(--encrypted-green);
+    border: 1px solid var(--encrypted-green);
   }
-  
-  .status-failed {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--error-red);
-    border: 1px solid var(--error-red);
+
+  .status-public {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-amber);
+    border: 1px solid var(--warning-amber);
   }
-  
-  /* Remittance Specific */
-  .transfer-card {
+
+  .status-verified {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--zk-verified);
+    border: 1px solid var(--zk-verified);
+  }
+
+  /* Privacy Specific Components */
+  .vault-card {
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--dark-border);
     border-radius: 1rem;
     transition: all 0.3s ease;
   }
-  
-  .transfer-card:hover {
+
+  .vault-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border-color: var(--primary-light);
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+    border-color: var(--primary-purple);
   }
-  
-  .amount-display {
-    font-family: 'Space Grotesk', sans-serif;
+
+  .hidden-balance {
+    font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
-    font-size: 2rem;
-    background: var(--success-gradient);
+    background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.02em;
   }
-  
+
+  .proof-badge {
+    background: var(--zk-gradient);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
   /* Navigation Active States */
   .nav-active {
     background: var(--sidebar-active);
-    color: var(--primary-light);
-    border: 1px solid rgba(30, 64, 175, 0.3);
+    color: var(--primary-purple);
+    border: 1px solid rgba(139, 92, 246, 0.3);
   }
-  
+
   .nav-hover:hover {
     background: var(--sidebar-hover);
     color: white;
   }
-  
+
+  /* ZK Proof Animation */
+  .zk-proof-animation {
+    animation: zkProofPulse 2s infinite;
+  }
+
+  @keyframes zkProofPulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+  }
+
+  /* Privacy Metrics */
+  .privacy-meter {
+    background: linear-gradient(
+      90deg,
+      var(--error-red) 0%,
+      var(--warning-amber) 50%,
+      var(--encrypted-green) 100%
+    );
+    height: 0.5rem;
+    border-radius: 9999px;
+  }
+
   /* Mobile Responsive */
   .mobile-menu {
     background: var(--header-bg);
     backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.1);
   }
-  
+
   /* Animations */
   .fade-in {
     animation: fadeIn 0.6s ease-out;
   }
-  
+
   .slide-up {
     animation: slideUp 0.6s ease-out;
   }
-  
-  .pulse-success {
-    animation: pulseSuccess 2s infinite;
+
+  .pulse-encrypted {
+    animation: pulseEncrypted 2s infinite;
   }
-  
+
   /* Loading States */
   .loading-shimmer {
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.05) 25%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0.05) 75%
+      rgba(139, 92, 246, 0.05) 25%,
+      rgba(139, 92, 246, 0.1) 50%,
+      rgba(139, 92, 246, 0.05) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
-  
+
   /* Focus States */
   .focus-ring:focus-visible {
-    outline: 2px solid var(--primary-light);
+    outline: 2px solid var(--primary-purple);
     outline-offset: 2px;
   }
-  
+
   /* Scrollbar Styling */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-track {
     background: var(--gray-800);
     border-radius: 3px;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--primary-blue);
+    background: var(--primary-purple);
     border-radius: 3px;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-light);
+    background: var(--secondary-purple);
+  }
+
+  /* Encryption Indicator */
+  .encryption-shield {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .encryption-shield::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--encrypted-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  /* Compliance Badge */
+  .compliance-badge {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--encrypted-green);
+    color: var(--encrypted-green);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
   }
 }
 
@@ -382,8 +482,9 @@ a {
   }
 }
 
-@keyframes pulseSuccess {
-  0%, 100% {
+@keyframes pulseEncrypted {
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
   70% {
@@ -397,6 +498,16 @@ a {
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 
@@ -433,44 +544,33 @@ a {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
-/* Currency Formatting */
-.currency-large {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 3rem;
-  line-height: 1;
+/* Proof Generation Loader */
+.proof-loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-top-color: var(--encrypted-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.currency-medium {
-  font-family: 'Space Grotesk', sans-serif;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hidden Balance Display */
+.balance-hidden {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
   font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 1.2;
 }
 
-/* Phone Input Styling */
-.phone-input {
-  background: var(--bg-card);
-  border: 1px solid var(--dark-border);
-  color: white;
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  font-family: 'Roboto Mono', monospace;
-}
-
-.phone-input:focus {
-  border-color: var(--primary-light);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Transaction History */
-.transaction-row {
-  transition: all 0.2s ease;
-}
-
-.transaction-row:hover {
-  background: rgba(255, 255, 255, 0.05);
+.balance-hidden::before {
+  content: '●●●●●●●●';
+  color: var(--primary-purple);
 }
 
 /* Responsive Grid */
@@ -497,7 +597,7 @@ a {
   .no-print {
     display: none;
   }
-  
+
   body {
     background: white;
     color: black;

@@ -1,7 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Send, Sun, Moon, Menu, Bell, Wallet, User, LogOut, Settings } from 'lucide-react';
+import {
+  Shield,
+  Sun,
+  Moon,
+  Menu,
+  Bell,
+  Wallet,
+  User,
+  LogOut,
+  Settings,
+  Eye,
+  EyeOff,
+  Lock,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLayout } from './LayoutProvider';
 import Link from 'next/link';
@@ -17,6 +30,7 @@ interface WalletData {
   network: 'mainnet' | 'testnet';
   notifications: number;
   userName: string;
+  privacyMode: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = false }) => {
@@ -26,28 +40,29 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [showWalletMenu, setShowWalletMenu] = useState(false);
+  const [privacyMode, setPrivacyMode] = useState(true);
   const router = useRouter();
   const { toggleSidebar } = useLayout();
 
-  // Dummy wallet data - in production, this would come from wallet state management
+  // Dummy wallet data
   const walletData: WalletData = {
     address: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
     balance: '1,234.56',
     network: 'mainnet',
     notifications: 3,
-    userName: 'Adaora Okafor',
+    userName: 'Anonymous User',
+    privacyMode: true,
   };
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'Send Money', path: '/send' },
-    { label: 'Receive', path: '/receive' },
-    { label: 'History', path: '/transactions' },
-    { label: 'Rates', path: '/rates' },
-    { label: 'Support', path: '/support' },
+    { label: 'Vaults', path: '/dashboard' },
+    { label: 'Lend', path: '/lend' },
+    { label: 'Borrow', path: '/borrow' },
+    { label: 'Compliance', path: '/compliance' },
+    { label: 'Docs', path: '/docs' },
   ];
 
-  // Initialize theme
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -76,20 +91,11 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
     setIsConnecting(true);
 
     try {
-      // Simulate wallet connection - replace with actual ArgentX/Braavos connection
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Check if wallet is available
-      if (typeof window !== 'undefined') {
-        // In production, use: window.starknet_argentX or window.starknet_braavos
-        setIsWalletConnected(true);
-
-        // Show success notification (you can add toast here)
-        console.log('Wallet connected successfully');
-      }
+      setIsWalletConnected(true);
+      console.log('Wallet connected successfully');
     } catch (error) {
       console.error('Failed to connect wallet:', error);
-      // Handle error (show toast/modal)
     } finally {
       setIsConnecting(false);
     }
@@ -115,7 +121,10 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Close dropdowns when clicking outside
+  const togglePrivacyMode = () => {
+    setPrivacyMode(!privacyMode);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -138,7 +147,6 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
           <div className='flex items-center justify-between h-16 lg:h-20'>
             {/* Left Section */}
             <div className='flex items-center space-x-3'>
-              {/* Sidebar Toggle */}
               {showSidebarToggle && (
                 <button
                   onClick={toggleSidebar}
@@ -152,14 +160,16 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
               {/* Logo */}
               <Link href='/' className='flex items-center space-x-3'>
                 <div className='w-10 h-10 lg:w-12 lg:h-12 bg-primary-gradient rounded-xl flex items-center justify-center'>
-                  <Send className='w-6 h-6 lg:w-7 lg:h-7 text-white' />
+                  <Shield className='w-6 h-6 lg:w-7 lg:h-7 text-white' />
                 </div>
                 <div>
                   <span className='text-white text-xl lg:text-2xl font-bold font-space-grotesk'>
-                    StarkRemit
+                    Arcanum
                   </span>
                   <div className='hidden sm:block'>
-                    <span className='text-blue-200 text-xs font-medium'>Powered by Starknet</span>
+                    <span className='text-purple-200 text-xs font-medium'>
+                      Privacy DeFi Protocol
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -184,6 +194,22 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
 
             {/* Right Section */}
             <div className='flex items-center gap-2 flex-shrink-0'>
+              {/* Privacy Mode Toggle */}
+              {isWalletConnected && (
+                <button
+                  onClick={togglePrivacyMode}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    privacyMode
+                      ? 'bg-encrypted-gradient text-white'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                  }`}
+                  aria-label='Toggle privacy mode'
+                  title={privacyMode ? 'Privacy Mode: ON' : 'Privacy Mode: OFF'}
+                >
+                  {privacyMode ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
+                </button>
+              )}
+
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -201,11 +227,17 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
               {isWalletConnected ? (
                 <div className='flex items-center gap-2'>
                   {/* Balance Display */}
-                  <div className='hidden md:flex items-center gap-2 bg-success-gradient px-3 py-1.5 rounded-lg'>
-                    <div className='w-2 h-2 bg-white rounded-full animate-pulse'></div>
-                    <span className='text-white font-semibold text-sm font-roboto-mono'>
-                      ${walletData.balance} USDC
-                    </span>
+                  <div className='hidden md:flex items-center gap-2 bg-primary-gradient px-3 py-1.5 rounded-lg'>
+                    <Lock className='w-3 h-3 text-white' />
+                    {privacyMode ? (
+                      <span className='text-white font-semibold text-sm font-jetbrains'>
+                        ●●●●●●
+                      </span>
+                    ) : (
+                      <span className='text-white font-semibold text-sm font-jetbrains'>
+                        {walletData.balance} ETH
+                      </span>
+                    )}
                   </div>
 
                   {/* Network Indicator */}
@@ -214,6 +246,12 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                     <span className='text-white text-xs font-medium capitalize'>
                       {walletData.network}
                     </span>
+                  </div>
+
+                  {/* ZK Proof Status */}
+                  <div className='hidden lg:flex items-center gap-1 bg-encrypted px-2 py-1 rounded-md'>
+                    <Shield className='w-3 h-3 text-encrypted' />
+                    <span className='text-encrypted text-xs font-medium'>ZK Verified</span>
                   </div>
 
                   {/* Notifications */}
@@ -236,10 +274,8 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                         <User className='w-4 h-4 text-white' />
                       </div>
                       <div className='hidden sm:block text-left'>
-                        <p className='text-white text-sm font-medium'>
-                          {walletData.userName.split(' ')[0]}
-                        </p>
-                        <p className='text-blue-200 text-xs font-roboto-mono'>
+                        <p className='text-white text-sm font-medium'>{walletData.userName}</p>
+                        <p className='text-purple-200 text-xs font-jetbrains'>
                           {formatAddress(walletData.address)}
                         </p>
                       </div>
@@ -250,7 +286,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                       <div className='absolute right-0 top-full mt-2 w-64 bg-card-dark rounded-xl shadow-xl z-50 fade-in'>
                         <div className='p-4 border-b border-gray-700'>
                           <p className='text-white font-medium'>{walletData.userName}</p>
-                          <p className='text-gray-400 text-sm font-roboto-mono'>
+                          <p className='text-gray-400 text-sm font-jetbrains'>
                             {formatAddress(walletData.address)}
                           </p>
                           <div className='mt-2 flex items-center gap-2'>
@@ -263,11 +299,11 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
 
                         <div className='p-2'>
                           <button
-                            onClick={() => router.push('/profile')}
+                            onClick={() => router.push('/dashboard')}
                             className='w-full flex items-center gap-3 px-3 py-2 text-left text-white hover:bg-white/10 rounded-lg transition-colors'
                           >
-                            <User className='w-4 h-4' />
-                            Profile
+                            <Shield className='w-4 h-4' />
+                            My Vaults
                           </button>
                           <button
                             onClick={() => router.push('/settings')}
@@ -275,6 +311,17 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                           >
                             <Settings className='w-4 h-4' />
                             Settings
+                          </button>
+                          <button
+                            onClick={togglePrivacyMode}
+                            className='w-full flex items-center gap-3 px-3 py-2 text-left text-white hover:bg-white/10 rounded-lg transition-colors'
+                          >
+                            {privacyMode ? (
+                              <EyeOff className='w-4 h-4' />
+                            ) : (
+                              <Eye className='w-4 h-4' />
+                            )}
+                            Privacy Mode: {privacyMode ? 'ON' : 'OFF'}
                           </button>
                           <div className='border-t border-gray-700 my-2'></div>
                           <button
@@ -310,7 +357,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                 </button>
               )}
 
-              {/* Mobile Menu Toggle (only show when no sidebar) */}
+              {/* Mobile Menu Toggle */}
               {!showSidebarToggle && (
                 <button
                   onClick={toggleMobileMenu}
@@ -328,7 +375,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
           </div>
         </div>
 
-        {/* Mobile Menu Overlay (only show when no sidebar) */}
+        {/* Mobile Menu Overlay */}
         {!showSidebarToggle && isMobileMenuOpen && (
           <div className='fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden'>
             <div className='flex justify-end p-4'>
@@ -348,7 +395,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
         )}
       </header>
 
-      {/* Mobile Menu (only show when no sidebar) */}
+      {/* Mobile Menu */}
       {!showSidebarToggle && (
         <div
           className={`
@@ -364,7 +411,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
           <div className='mobile-menu'>
             <nav className='max-w-[90vw] mx-auto px-4 py-4'>
               <div className='flex flex-col space-y-2'>
-                {/* Mobile Wallet Info (when connected) */}
+                {/* Mobile Wallet Info */}
                 {isWalletConnected && (
                   <div className='flex items-center justify-between p-4 bg-white/10 rounded-lg mb-4'>
                     <div className='flex items-center gap-3'>
@@ -373,12 +420,16 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                       </div>
                       <div>
                         <p className='text-white text-sm font-medium'>{walletData.userName}</p>
-                        <p className='text-blue-200 text-xs font-roboto-mono'>
+                        <p className='text-purple-200 text-xs font-jetbrains'>
                           {formatAddress(walletData.address)}
                         </p>
                         <div className='flex items-center gap-3 text-xs mt-1'>
-                          <span className='text-success'>${walletData.balance} USDC</span>
-                          <span className='text-stark capitalize'>{walletData.network}</span>
+                          {privacyMode ? (
+                            <span className='text-primary-purple'>●●●●●● ETH</span>
+                          ) : (
+                            <span className='text-primary-purple'>{walletData.balance} ETH</span>
+                          )}
+                          <span className='text-encrypted capitalize'>{walletData.network}</span>
                         </div>
                       </div>
                     </div>
@@ -391,7 +442,7 @@ const Header: React.FC<HeaderProps> = ({ className = '', showSidebarToggle = fal
                   </div>
                 )}
 
-                {/* Mobile Connect Wallet (when not connected) */}
+                {/* Mobile Connect Wallet */}
                 {!isWalletConnected && (
                   <button
                     onClick={handleConnectWallet}
